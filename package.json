@@ -1,6 +1,6 @@
 {
   "name": "hapi-zebra",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Simple server-wide instance of Stripe.",
   "homepage": "https://github.com/sholladay/hapi-zebra",
   "main": "index.js",
