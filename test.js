@@ -21,7 +21,7 @@ const mockServer = async (option) => {
             plugin : {
                 register : zebra,
                 options  : {
-                    secretKey : 'someSuperSecretKey'
+                    secretKey : 'sk_someSuperSecretSneakyKey'
                 }
             },
             route  : mockRoute()
