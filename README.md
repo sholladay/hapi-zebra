@@ -1,6 +1,6 @@
 # hapi-zebra [![Build status for hapi-zebra on Circle CI.](https://img.shields.io/circleci/project/sholladay/hapi-zebra/master.svg "Circle Build Status")](https://circleci.com/gh/sholladay/hapi-zebra "Hapi Zebra Builds")
 
-> Simple server-wide instance of Stripe.
+> Use [Stripe](https://stripe.com) in server routes
 
 ## Why?
 
@@ -45,17 +45,15 @@ Charge the user.
 server.route({
     method : 'POST',
     path   : '/user/charge',
-    handler(request, reply) {
-        const { stripe } = request;
+    async handler(request, reply) {
+        const { stripe } = request.server;
 
-        (async () => {
-            await stripe.subscriptions.create({
-                plan        : 'some-plan-name',
-                customer    : 'some-user-id',
-                source      : request.payload.stripeToken
-            });
-            reply('Thanks for paying!');
-        })().catch(reply);
+        await stripe.subscriptions.create({
+            plan     : 'some-plan-name',
+            customer : 'some-user-id',
+            source   : request.payload.stripeToken
+        });
+        reply('Thanks for paying!');
     }
 })
 ```

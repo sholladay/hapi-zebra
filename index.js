@@ -5,15 +5,14 @@ const joi = require('joi');
 const pkg = require('./package.json');
 
 const register = (server, option, done) => {
-    const { error, value : config } = joi.validate(Object.assign({}, option), {
+    const { error, value : config } = joi.validate(option, joi.object().required().keys({
         secretKey : joi.string().required().token().min(25).regex(/^sk_/)
-    });
+    }));
     if (error) {
         done(error);
         return;
     }
-    const stripe = new Stripe(config.secretKey);
-    server.decorate('request', 'stripe', stripe);
+    server.decorate('server', 'stripe', new Stripe(config.secretKey));
     done();
 };
 

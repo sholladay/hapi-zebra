@@ -78,7 +78,7 @@ test('zebra basics', async (t) => {
     const server = await mockServer({
         route : mockRoute({
             handler(request, reply) {
-                const { stripe } = request;
+                const { stripe } = request.server;
                 t.truthy(stripe);
                 t.is(typeof stripe, 'object');
                 t.truthy(stripe.subscriptions);
@@ -88,6 +88,10 @@ test('zebra basics', async (t) => {
             }
         })
     });
+
+    t.truthy(server.stripe);
+    t.is(typeof server.stripe, 'object');
+
     const response = await mockRequest(server);
 
     t.is(response.statusCode, 200);

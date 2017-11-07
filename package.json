@@ -1,7 +1,7 @@
 {
   "name": "hapi-zebra",
   "version": "0.2.0",
-  "description": "Simple server-wide instance of Stripe.",
+  "description": "Use Stripe in server routes",
   "homepage": "https://github.com/sholladay/hapi-zebra",
   "main": "index.js",
   "author": {
@@ -28,14 +28,14 @@
     "index.js"
   ],
   "dependencies": {
-    "joi": "^10.2.2",
-    "stripe": "^4.15.1"
+    "joi": "^13.0.1",
+    "stripe": "^5.3.0"
   },
   "devDependencies": {
-    "ava": "^0.18.1",
-    "eslint-config-tidy": "^0.4.0",
+    "ava": "^0.23.0",
+    "eslint-config-tidy": "^0.5.0",
     "hapi": "^16.1.0",
-    "xo": "^0.17.0"
+    "xo": "^0.18.2"
   },
   "keywords": [
     "hapi",
