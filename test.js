@@ -48,11 +48,12 @@ test('without zebra', async (t) => {
         plugin : null,
         route  : mockRoute({
             handler(request) {
-                t.false('stripe' in request);
+                t.false('stripe' in request.server);
                 return { foo : 'bar' };
             }
         })
     });
+    t.false('stripe' in server);
     const response = await mockRequest(server);
 
     t.is(response.statusCode, 200);
