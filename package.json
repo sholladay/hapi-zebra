@@ -29,6 +29,7 @@
   ],
   "dependencies": {
     "joi": "^13.0.1",
+    "strip-ansi": "^4.0.0",
     "stripe": "^5.3.0"
   },
   "devDependencies": {

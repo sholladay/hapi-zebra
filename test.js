@@ -1,5 +1,6 @@
 import test from 'ava';
 import hapi from 'hapi';
+import stripAnsi from 'strip-ansi';
 import zebra from '.';
 
 const mockRoute = (option) => {
@@ -64,7 +65,7 @@ test('zebra without secretKey', async (t) => {
         plugin : zebra
     }));
     t.true(err.isJoi);
-    // TODO: t.is(err.message, '{\n  "secretKey" [1]: -- missing --\n}\n \n[1] "secretKey" is required');
+    t.is(stripAnsi(err.message), '{\n  "secretKey" [1]: -- missing --\n}\n\n[1] "secretKey" is required');
 });
 
 test('zebra basics', async (t) => {
