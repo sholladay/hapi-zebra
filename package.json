@@ -1,59 +1,62 @@
 {
-  "name": "hapi-zebra",
-  "version": "0.2.0",
-  "description": "Use Stripe in server routes",
-  "homepage": "https://github.com/sholladay/hapi-zebra",
-  "main": "index.js",
-  "author": {
-    "name": "Seth Holladay",
-    "url": "http://seth-holladay.com",
-    "email": "me@seth-holladay.com"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:sholladay/hapi-zebra.git"
-  },
-  "bugs": {
-    "url": "https://github.com/sholladay/hapi-zebra/issues",
-    "email": "me@seth-holladay.com"
-  },
-  "engines": {
-    "node": ">=6"
-  },
-  "license": "MPL-2.0",
-  "files": [
-    "index.js"
-  ],
-  "dependencies": {
-    "joi": "^13.0.1",
-    "stripe": "^5.3.0"
-  },
-  "devDependencies": {
-    "ava": "^0.24.0",
-    "eslint-config-tidy": "^0.6.0",
-    "hapi": "^17.1.1",
-    "strip-ansi": "^4.0.0",
-    "xo": "git@github.com:sindresorhus/xo.git#7c77af3cc036bf488f0b5b87e37fad9913e1a5f5"
-  },
-  "keywords": [
-    "hapi",
-    "server",
-    "plugin",
-    "stripe",
-    "charge",
-    "card",
-    "cards",
-    "money",
-    "pay",
-    "payment",
-    "payments",
-    "subscription",
-    "subscriptions"
-  ],
-  "xo": {
-    "extend": "tidy"
-  }
+    "name": "hapi-zebra",
+    "version": "0.2.0",
+    "description": "Use Stripe in server routes",
+    "homepage": "https://github.com/sholladay/hapi-zebra",
+    "main": "index.js",
+    "author": {
+        "name": "Seth Holladay",
+        "url": "https://seth-holladay.com",
+        "email": "me@seth-holladay.com"
+    },
+    "scripts": {
+        "test": "xo && ava"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:sholladay/hapi-zebra.git"
+    },
+    "bugs": {
+        "url": "https://github.com/sholladay/hapi-zebra/issues",
+        "email": "me@seth-holladay.com"
+    },
+    "engines": {
+        "node": ">=8"
+    },
+    "license": "MPL-2.0",
+    "files": [
+        "index.js"
+    ],
+    "peerDependencies": {
+        "hapi": ">=17"
+    },
+    "dependencies": {
+        "joi": "^13.0.1",
+        "stripe": "^5.3.0"
+    },
+    "devDependencies": {
+        "ava": "^0.24.0",
+        "eslint-config-tidy": "^0.6.0",
+        "hapi": "^17.1.1",
+        "strip-ansi": "^4.0.0",
+        "xo": "git@github.com:sindresorhus/xo.git#7c77af3cc036bf488f0b5b87e37fad9913e1a5f5"
+    },
+    "keywords": [
+        "hapi",
+        "server",
+        "plugin",
+        "stripe",
+        "charge",
+        "card",
+        "cards",
+        "money",
+        "pay",
+        "payment",
+        "payments",
+        "subscription",
+        "subscriptions"
+    ],
+    "xo": {
+        "extend": "tidy"
+    }
 }

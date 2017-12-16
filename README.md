@@ -1,12 +1,12 @@
-# hapi-zebra [![Build status for hapi-zebra on Circle CI.](https://img.shields.io/circleci/project/sholladay/hapi-zebra/master.svg "Circle Build Status")](https://circleci.com/gh/sholladay/hapi-zebra "Hapi Zebra Builds")
+# hapi-zebra [![Build status for hapi Zebra](https://img.shields.io/circleci/project/sholladay/hapi-zebra/master.svg "Build Status")](https://circleci.com/gh/sholladay/hapi-zebra "Builds")
 
 > Use [Stripe](https://stripe.com) in server routes
 
 ## Why?
 
+ - Simplifies configuration.
+ - Ensures needed API keys are available.
  - Less verbose routes.
- - Centralized authentication.
- - Easy configuration.
 
 ## Install
 
@@ -16,46 +16,40 @@ npm install hapi-zebra --save
 
 ## Usage
 
-Get it into your program.
+Register the plugin on your server to make the `stripe` library available in routes.
 
 ```js
+const hapi = require('hapi');
 const zebra = require('hapi-zebra');
-```
 
-Register the plugin on your server.
+const server = hapi.server();
 
-```js
-server.register({
-    register : zebra,
-    options  : {
-        secretKey : process.env.STRIPE_SECRET_KEY
-    }
-})
-    .then(() => {
-        return server.start();
-    })
-    .then(() => {
-        console.log(server.info.uri);
+const init = async () => {
+    await server.register({
+        plugin  : zebra,
+        options : {
+            secretKey : process.env.STRIPE_SECRET_KEY
+        }
     });
-```
+    server.route({
+        method : 'POST',
+        path   : '/charge',
+        async handler(request) {
+            const { stripe } = request.server;
 
-Charge the user.
+            await stripe.subscriptions.create({
+                plan     : 'some-plan-name',
+                customer : 'some-user-id',
+                source   : request.payload.stripeToken
+            });
+            return 'Thanks for paying!';
+        }
+    });
+    await server.start();
+    console.log('Server ready:', server.info.uri);
+};
 
-```js
-server.route({
-    method : 'POST',
-    path   : '/user/charge',
-    async handler(request, reply) {
-        const { stripe } = request.server;
-
-        await stripe.subscriptions.create({
-            plan     : 'some-plan-name',
-            customer : 'some-user-id',
-            source   : request.payload.stripeToken
-        });
-        reply('Thanks for paying!');
-    }
-})
+init();
 ```
 
 ## API
@@ -76,16 +70,16 @@ Your secret [Stripe API key](https://stripe.com/docs/dashboard#api-keys), used t
 
 ## Contributing
 
-See our [contributing guidelines](https://github.com/sholladay/hapi-zebra/blob/master/CONTRIBUTING.md "The guidelines for participating in this project.") for more details.
+See our [contributing guidelines](https://github.com/sholladay/hapi-zebra/blob/master/CONTRIBUTING.md "Guidelines for participating in this project") for more details.
 
 1. [Fork it](https://github.com/sholladay/hapi-zebra/fork).
 2. Make a feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
-5. [Submit a pull request](https://github.com/sholladay/hapi-zebra/compare "Submit code to this project for review.").
+5. [Submit a pull request](https://github.com/sholladay/hapi-zebra/compare "Submit code to this project for review").
 
 ## License
 
-[MPL-2.0](https://github.com/sholladay/hapi-zebra/blob/master/LICENSE "The license for hapi-zebra.") © [Seth Holladay](http://seth-holladay.com "Author of hapi-zebra.")
+[MPL-2.0](https://github.com/sholladay/hapi-zebra/blob/master/LICENSE "License for hapi-zebra") © [Seth Holladay](https://seth-holladay.com "Author of hapi-zebra")
 
 Go make something, dang it.
