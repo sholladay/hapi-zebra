@@ -57,12 +57,13 @@ test('without zebra', async (t) => {
     const response = await mockRequest(server);
 
     t.is(response.statusCode, 200);
+    t.is(response.statusMessage, 'OK');
     t.is(response.headers['content-type'], 'application/json; charset=utf-8');
     t.is(response.payload, '{"foo":"bar"}');
 });
 
 test('zebra without secretKey', async (t) => {
-    const err = await t.throws(mockServer({
+    const err = await t.throwsAsync(mockServer({
         plugin : zebra
     }));
     t.true(err.isJoi);
@@ -90,6 +91,7 @@ test('zebra basics', async (t) => {
     const response = await mockRequest(server);
 
     t.is(response.statusCode, 200);
+    t.is(response.statusMessage, 'OK');
     t.is(response.headers['content-type'], 'application/json; charset=utf-8');
     t.is(response.payload, '{"foo":"bar"}');
 });
