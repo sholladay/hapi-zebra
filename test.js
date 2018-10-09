@@ -95,3 +95,26 @@ test('zebra basics', async (t) => {
     t.is(response.headers['content-type'], 'application/json; charset=utf-8');
     t.is(response.payload, '{"foo":"bar"}');
 });
+
+test('sets API version', async (t) => {
+    const server = await mockServer({
+        plugin : {
+            plugin  : zebra,
+            options : {
+                apiVersion : '2018-01-01',
+                secretKey  : 'sk_someSuperSecretSneakyKey'
+            }
+        }
+    });
+
+    t.truthy(server.stripe);
+    t.is(typeof server.stripe, 'object');
+    t.is(server.stripe._api.version, '2018-01-01');
+
+    const response = await mockRequest(server);
+
+    t.is(response.statusCode, 200);
+    t.is(response.statusMessage, 'OK');
+    t.is(response.headers['content-type'], 'application/json; charset=utf-8');
+    t.is(response.payload, '{"foo":"bar"}');
+});

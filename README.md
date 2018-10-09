@@ -62,6 +62,12 @@ Type: `object`
 
 Plugin settings.
 
+#### apiVersion
+
+Type: `string`
+
+Set a specific [Stripe API version](https://stripe.com/docs/upgrades) to use for all requests, overriding your account's default setting.
+
 #### secretKey
 
 Type: `string`
