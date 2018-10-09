@@ -2,16 +2,18 @@
 
 > Use [Stripe](https://stripe.com) in server routes
 
+This [hapi](https://hapijs.com) plugin adds an instance of the Stripe SDK to your server so you can easily integrate payments in your app.
+
 ## Why?
 
- - Simplifies configuration.
- - Ensures needed API keys are available.
- - Less verbose routes.
+ - Validates your settings (e.g. API keys).
+ - Allows you to set the Stripe SDK and API versions.
+ - Simplifies your routes.
 
 ## Install
 
 ```sh
-npm install hapi-zebra --save
+npm install hapi-zebra stripe --save
 ```
 
 ## Usage
@@ -51,6 +53,8 @@ const init = async () => {
 
 init();
 ```
+
+Note that `hapi-zebra` will use the version of `stripe` that is in your package.json.
 
 ## API
 
