@@ -1,4 +1,4 @@
-# hapi-zebra [![Build status for hapi Zebra](https://img.shields.io/circleci/project/sholladay/hapi-zebra/master.svg "Build Status")](https://circleci.com/gh/sholladay/hapi-zebra "Builds")
+# hapi-zebra [![Build status for hapi Zebra](https://travis-ci.com/sholladay/hapi-zebra.svg?branch=master "Build Status")](https://travis-ci.com/sholladay/hapi-zebra "Builds")
 
 > Use [Stripe](https://stripe.com) in server routes
 
