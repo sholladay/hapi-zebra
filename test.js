@@ -1,60 +1,46 @@
 import test from 'ava';
-import hapi from 'hapi';
-import stripAnsi from 'strip-ansi';
+import hapi from '@hapi/hapi';
 import zebra from '.';
 
-const mockRoute = (option) => {
+const makeRoute = (option) => {
     return {
-        method : 'POST',
+        method : 'GET',
         path   : '/',
         handler() {
-            return { foo : 'bar' };
+            return 'Hello!';
         },
         ...option
     };
 };
 
-const mockServer = async (option) => {
-    const { plugin, route } = {
+const makeServer = async (option) => {
+    const { plugin } = {
         plugin : {
-            plugin   : zebra,
-            options  : {
+            plugin  : zebra,
+            options : {
                 secretKey : 'sk_someSuperSecretSneakyKey'
             }
         },
-        route  : mockRoute(),
         ...option
     };
     const server = hapi.server();
     if (plugin) {
         await server.register(plugin);
     }
-    if (route) {
-        server.route(route);
-    }
     return server;
 };
 
-const mockRequest = (server, option) => {
-    return server.inject({
-        method : 'POST',
-        url    : '/',
-        ...option
-    });
-};
-
 test('without zebra', async (t) => {
-    const server = await mockServer({
-        plugin : null,
-        route  : mockRoute({
-            handler(request) {
-                t.false('stripe' in request.server);
-                return { foo : 'bar' };
-            }
-        })
-    });
+    t.plan(6);
+    const server = await makeServer({ plugin : null });
+    server.route(makeRoute({
+        handler(request) {
+            t.false('stripe' in request.server);
+            return { foo : 'bar' };
+        }
+    }));
     t.false('stripe' in server);
-    const response = await mockRequest(server);
+    const response = await server.inject('/');
 
     t.is(response.statusCode, 200);
     t.is(response.statusMessage, 'OK');
@@ -63,32 +49,30 @@ test('without zebra', async (t) => {
 });
 
 test('zebra without secretKey', async (t) => {
-    const err = await t.throwsAsync(mockServer({
-        plugin : zebra
-    }));
-    t.true(err.isJoi);
-    t.is(stripAnsi(err.message), '{\n  "secretKey" [1]: -- missing --\n}\n\n[1] "secretKey" is required');
+    const error = await t.throwsAsync(makeServer({ plugin : zebra }));
+    t.true(error.isJoi);
+    t.is(error.message, '"secretKey" is required');
 });
 
 test('zebra basics', async (t) => {
-    const server = await mockServer({
-        route : mockRoute({
-            handler(request) {
-                const { stripe } = request.server;
-                t.truthy(stripe);
-                t.is(typeof stripe, 'object');
-                t.truthy(stripe.subscriptions);
-                t.is(typeof stripe.subscriptions, 'object');
-                t.is(typeof stripe.subscriptions.create, 'function');
-                return { foo : 'bar' };
-            }
-        })
-    });
+    t.plan(11);
+    const server = await makeServer();
+    server.route(makeRoute({
+        handler(request) {
+            const { stripe } = request.server;
+            t.truthy(stripe);
+            t.is(typeof stripe, 'object');
+            t.truthy(stripe.subscriptions);
+            t.is(typeof stripe.subscriptions, 'object');
+            t.is(typeof stripe.subscriptions.create, 'function');
+            return { foo : 'bar' };
+        }
+    }));
 
     t.truthy(server.stripe);
     t.is(typeof server.stripe, 'object');
 
-    const response = await mockRequest(server);
+    const response = await server.inject('/');
 
     t.is(response.statusCode, 200);
     t.is(response.statusMessage, 'OK');
@@ -97,7 +81,7 @@ test('zebra basics', async (t) => {
 });
 
 test('sets API version', async (t) => {
-    const server = await mockServer({
+    const server = await makeServer({
         plugin : {
             plugin  : zebra,
             options : {
@@ -106,15 +90,16 @@ test('sets API version', async (t) => {
             }
         }
     });
+    server.route(makeRoute());
 
     t.truthy(server.stripe);
     t.is(typeof server.stripe, 'object');
     t.is(server.stripe._api.version, '2018-01-01');
 
-    const response = await mockRequest(server);
+    const response = await server.inject('/');
 
     t.is(response.statusCode, 200);
     t.is(response.statusMessage, 'OK');
-    t.is(response.headers['content-type'], 'application/json; charset=utf-8');
-    t.is(response.payload, '{"foo":"bar"}');
+    t.is(response.headers['content-type'], 'text/html; charset=utf-8');
+    t.is(response.payload, 'Hello!');
 });

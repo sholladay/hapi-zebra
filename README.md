@@ -13,7 +13,7 @@ This [hapi](https://hapijs.com) plugin adds an instance of the Stripe SDK to you
 ## Install
 
 ```sh
-npm install hapi-zebra stripe --save
+npm install hapi-zebra stripe
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ npm install hapi-zebra stripe --save
 Register the plugin on your server to make the `stripe` library available in routes.
 
 ```js
-const hapi = require('hapi');
+const hapi = require('@hapi/hapi');
 const zebra = require('hapi-zebra');
 
 const server = hapi.server();
@@ -54,17 +54,17 @@ const init = async () => {
 init();
 ```
 
-Note that `hapi-zebra` will use the version of `stripe` that is in your package.json.
+Note that `hapi-zebra` will use the version of the Stripe SDK that is in your package.json.
 
 ## API
 
 Please see Stripe's [API documentation](https://stripe.com/docs/api/node) for details on the `stripe` library itself.
 
-### option
+### Plugin options
 
 Type: `object`
 
-Plugin settings.
+The options are passed to `new Stripe()` to configure the Stripe client. See the [Stripe SDK](https://github.com/stripe/stripe-node) for details on the available options, such as `apiVersion`.
 
 #### apiVersion
 
@@ -77,6 +77,14 @@ Set a specific [Stripe API version](https://stripe.com/docs/upgrades) to use for
 Type: `string`
 
 Your secret [Stripe API key](https://stripe.com/docs/dashboard#api-keys), used to authenticate with Stripe when using its API.
+
+### Decorations
+
+For convenience, this plugin adds the following API to the hapi server instance.
+
+#### server.stripe
+
+An instance of the [Stripe SDK](https://github.com/stripe/stripe-node), which has methods to make requests to the Stripe API. This is available as `request.server.stripe` inside of route handlers.
 
 ## Contributing
 
