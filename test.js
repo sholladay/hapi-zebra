@@ -54,6 +54,11 @@ test('zebra without secretKey', async (t) => {
     t.is(error.message, '"secretKey" is required');
 });
 
+test('server can initialize', async (t) => {
+    const server = await makeServer();
+    await t.notThrowsAsync(server.initialize());
+});
+
 test('zebra basics', async (t) => {
     t.plan(11);
     const server = await makeServer();
