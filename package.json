@@ -1,6 +1,6 @@
 {
     "name": "hapi-zebra",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Use Stripe in server routes",
     "homepage": "https://github.com/sholladay/hapi-zebra",
     "main": "index.js",
